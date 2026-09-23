@@ -57,3 +57,6 @@ mlruns/
 .idea/
 .DS_Store
 Thumbs.db
+
+# ---- Draft notebooks ----
+*_draft.*
