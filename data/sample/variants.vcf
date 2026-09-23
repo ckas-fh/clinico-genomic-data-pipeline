@@ -1,0 +1,5 @@
+##fileformat=VCFv4.2
+##INFO=<ID=GENE,Number=1,Type=String,Description="Gene symbol">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	P001	P002	P003	P004
+19	11200138	.	G	A	99	PASS	GENE=LDLR	GT	0/1	0/0	0/1	0/0
