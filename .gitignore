@@ -1,0 +1,59 @@
+# ---- Data safety: never commit raw or patient data ----
+data/raw/
+data/interim/
+data/processed/
+*.vcf
+*.vcf.gz
+*.bam
+*.bai
+*.cram
+*.fastq
+*.fastq.gz
+*.parquet
+*.csv
+*.tsv
+*.xlsx
+# Allow small synthetic sample files explicitly
+!data/sample/**
+
+# ---- Secrets & credentials ----
+.env
+.env.*
+*.pem
+*.key
+.databrickscfg
+secrets/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ---- Virtual environments ----
+.venv/
+venv/
+env/
+
+# ---- Jupyter ----
+.ipynb_checkpoints/
+
+# ---- Spark / Databricks ----
+spark-warehouse/
+metastore_db/
+derby.log
+.databricks/
+mlruns/
+
+# ---- Editors & OS ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
