@@ -1,0 +1,5 @@
+patient_id,diagnosis_code,diagnosis_name,diagnosis_date
+P001,E78.5,Hyperlipidemia,2026-01-15
+P002,I10,Hypertension,2026-02-10
+P003,E78.5,Hyperlipidemia,2026-03-02
+P004,I10,Hypertension,2026-01-28

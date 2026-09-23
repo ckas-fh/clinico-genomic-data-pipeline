@@ -1,0 +1,7 @@
+patient_id,lab_name,value,unit
+P001,LDL,185.0,mg/dL
+P002,LDL,110.0,mg/dL
+P003,LDL,4.9,mmol/L
+P004,LDL,,mg/dL
+P004,LDL,125.0,mg/dL
+P004,LDL,125.0,mg/dL
