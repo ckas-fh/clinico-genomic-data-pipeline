@@ -48,7 +48,18 @@ Notebooks are stored in Databricks source format (`.py`) and open as notebooks i
 
 ## Getting Started
 
-_Coming soon._
+The pipeline job is defined as code in [`databricks.yml`](databricks.yml) (a [Databricks Asset Bundle](https://docs.databricks.com/en/dev-tools/bundles/index.html)). It runs the notebooks on serverless compute, with genomic processing (04) running in parallel with QC and OMOP transformation (02 → 03).
+
+With the [Databricks CLI](https://docs.databricks.com/en/dev-tools/cli/install.html) installed:
+
+```bash
+databricks auth login --host https://dbc-aac82938-656d.cloud.databricks.com
+databricks bundle validate                         # check the configuration
+databricks bundle deploy                           # create or update the job in the workspace
+databricks bundle run clinico_genomic_pipeline     # run the full pipeline
+```
+
+Notebook 01 reads sample data from the Databricks Git folder (`/Workspace/Users/<you>/clinico-genomic-data-pipeline/data/sample`), so that folder must exist in the workspace.
 
 ## Author
 
