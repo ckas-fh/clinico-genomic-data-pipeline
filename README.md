@@ -25,7 +25,26 @@ Clinico-genomic datasets link patients' clinical records (diagnoses, medications
 
 ## Repository Structure
 
-_Coming soon._
+```
+notebooks/
+  01_data_ingestion.py        # load sample CSVs and VCF into raw_* tables
+  02_data_quality.py          # QC checks, cleaning, unit standardization -> clean_* tables
+  03_omop_transformation.py   # simplified OMOP person, condition_occurrence, measurement
+  04_genomic_processing.py    # parse VCF into genomic_variants (one row per patient per variant)
+  05_build_cohort.py          # join clinical + genomic data -> clinico_genomic_cohort
+  06_analysis.py              # LDL by LDLR carrier status, simple linear regression
+data/sample/                  # small synthetic input files
+```
+
+Notebooks are stored in Databricks source format (`.py`) and open as notebooks in a Databricks Git folder. Run them in order.
+
+## Planned Improvements
+
+- **Cohort grain (05):** joining per-variant genomic rows and per-measurement LDL rows can create multiple rows per person. Aggregate to one row per person (for example, carrier status per gene and a single LDL value) before joining, so counts in 06 reflect people, not rows.
+- **Unit conversion (02):** the mmol/L to mg/dL factor (38.67) is applied to every lab reported in mmol/L. Scope it to cholesterol labs and add lab-specific factors (for example, glucose uses 18) as more labs are added.
+- **VCF sample columns (04):** patient columns P001–P004 are hardcoded. Read sample IDs from the `#CHROM` header line so any number of patients is supported.
+- **Regression inputs (06):** `VectorAssembler` and `LinearRegression` fail on null `variant_carrier` or `ldl_mg_dl`. Filter or impute missing values before fitting.
+- **Duplicate cell (02):** the missing patient ID / diagnosis code check appears twice.
 
 ## Getting Started
 
