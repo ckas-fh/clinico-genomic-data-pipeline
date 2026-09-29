@@ -1,0 +1,63 @@
+# Databricks Asset Bundle: defines the pipeline job as code.
+# Deploy with `databricks bundle deploy`, run with `databricks bundle run clinico_genomic_pipeline`.
+
+bundle:
+  name: clinico-genomic-data-pipeline
+
+workspace:
+  host: https://dbc-aac82938-656d.cloud.databricks.com
+
+resources:
+  jobs:
+    clinico_genomic_pipeline:
+      name: Clinico-genomic pipeline
+      max_concurrent_runs: 1
+      queue:
+        enabled: true
+      schedule:
+        quartz_cron_expression: "0 0 13 * * ?"
+        timezone_id: America/Los_Angeles
+        pause_status: PAUSED
+
+      # No cluster is specified, so tasks run on serverless compute.
+      # 04 (genomic) runs in parallel with 02 -> 03 (clinical); both feed 05.
+      tasks:
+        - task_key: 01_ingestion
+          notebook_task:
+            notebook_path: ./notebooks/01_data_ingestion.py
+
+        - task_key: 02_data_quality
+          depends_on:
+            - task_key: 01_ingestion
+          notebook_task:
+            notebook_path: ./notebooks/02_data_quality.py
+
+        - task_key: 03_omop_transformation
+          depends_on:
+            - task_key: 02_data_quality
+          notebook_task:
+            notebook_path: ./notebooks/03_omop_transformation.py
+
+        - task_key: 04_genomic_processing
+          depends_on:
+            - task_key: 01_ingestion
+          notebook_task:
+            notebook_path: ./notebooks/04_genomic_processing.py
+
+        - task_key: 05_build_cohort
+          depends_on:
+            - task_key: 03_omop_transformation
+            - task_key: 04_genomic_processing
+          notebook_task:
+            notebook_path: ./notebooks/05_build_cohort.py
+
+        - task_key: 06_analysis
+          depends_on:
+            - task_key: 05_build_cohort
+          notebook_task:
+            notebook_path: ./notebooks/06_analysis.py
+
+targets:
+  dev:
+    mode: development
+    default: true
